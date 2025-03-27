@@ -20,8 +20,8 @@ Ensure you have the following installed:
 ### Setup
 1. Clone the repository:
    ```sh
-   git clone <repository-url>
-   cd <project-folder>
+   git clone https://github.com/animeshchandra-121/Social-Media-app.git
+   cd Social-Media-app
    ```
 2. Create and activate a virtual environment:
    ```sh
