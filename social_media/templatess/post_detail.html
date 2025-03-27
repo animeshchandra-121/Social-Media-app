@@ -1,0 +1,51 @@
+{% extends 'index.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="container mt-5">
+    <div class="row mt-5">
+        <div class="col-md-5 col-sm-6">
+            <a href="{%url 'social:post' %}" class="btn btn-light">Back to feed</a>
+        </div>
+    </div>
+        <!-- <div class="col-md-7 text-end">
+            {% if user.is_authenticated %}
+                <a href="{% url 'logout' %}" class="btn btn-danger">Logout</a>
+            {% endif %}
+        </div> -->
+    <!-- Post Sections -->
+    <div class="row justify-content-center mt-3">
+        <div class="col-md-5 col-sm-12 border-bottom">
+            <p>
+                <strong>{{ post.author }}</strong> {{ post.created_on }}
+                {%if request.user == post.author %}
+
+                    <a href="{%url 'social:update-post' post.id %}" style="color: #333;"><i class="far fa-edit"></i></a>
+                    <a href="{%url 'social:delete-post' post.id %}" style="color: #333;"><i class="far fa-trash"></i></a>
+                {%endif%}
+            </p>
+            <p>{{ post.body }}</p>
+        </div>
+    </div>
+
+    <div class="row justify-content-center mt-3 mb-5">
+        <div class="col-md-5 col-sm-12">
+            <form action="" method="POST">
+                {% csrf_token %}
+                {{ comment|crispy }}
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-success mt-3">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+        <!-- Comment Section -->
+    <div class = "row justify-content-center mt-3">
+            <div class="col-md-5 col-sm-12 border-bottom">
+                {% for commenting in comment_obj %}
+                <p><strong>{{commenting.users}}</strong> {{ commenting.created_on }}</p>
+                <p>{{commenting.comments}}</p>
+                {% endfor %}
+            </div>
+    </div>
+</div>
+{% endblock %}

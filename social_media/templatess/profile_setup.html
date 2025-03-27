@@ -1,0 +1,64 @@
+{% extends 'index.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="container mt-5">
+
+    <!-- Post Form -->
+    <div class="row justify-content-center mt-5">
+        <div class="card shadow-sm col-md-8 col-sm-12 px-5 pt-3">
+            <img src="{{profile.picture.url}}" class="rounded-circle" width="100" height="100"/>
+            {%if user%}
+            <h3>{{user}}
+                <span>
+                    {%if request.user == user%}
+                    <a href="{%url 'social:update-profile' user.id %}" style="color: #333"><i class="far fa-edit"></i></a>
+                    {%endif%}
+                </span>
+            </h3>
+            {%endif%}
+
+            {%if profile.location%}
+            <p>{{profile.location}}</h3>
+            {%endif%}
+
+            {%if profile.birth_date %}
+            <p>{{profile.birth_date}}</h3>
+            {%endif%}
+
+            {%if profile.bio%}
+            <p>{{profile.bio}}</h3>
+            {%endif%}
+
+            <div class="mb-3">
+                <p>Followers:{{number_of_followers}}</p>
+                {% if user == request.user %}
+                {% else %}
+            
+                {%if is_following%}
+                <form action="{%url 'social:remove-follower' user.id %}" method="POST">
+                    {% csrf_token %}
+                    <button class="btn btn-outline-danger" type="submit">Unfollow</button>
+                </form>
+                {% else %}
+                <form action="{%url 'social:add-follower' user.id %}" method="POST">
+                    {% csrf_token %}
+                    <button class="btn btn-outline-success" type="submit">Follow</button>
+                </form>
+                {%endif%}
+                {%endif%}
+            </div>
+        </div>
+    </div>
+        {% for post in posts %}
+        <div class="row justify-content-center mt-5">
+        <div class="col-md-8 col-sm-12 border-bottom">
+            <p><a style="text-decoration: none" class="text-primary"
+                href="{% url 'social:profile' post.author.profile.user.id %}">{{ post.author }} </a> {{ post.created_on }}</p>
+            <div class="position-relative"><p>{{ post.body }}</p>
+                <a href="{% url 'social:post-detail' post.id %}">View Post</a></div>
+        </div>
+        </div>
+        {% endfor %}
+</div>
+
+{% endblock %}
